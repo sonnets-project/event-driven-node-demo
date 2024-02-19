@@ -8,23 +8,23 @@ int (*driverMap[DRIVER_MAP_SIZE])(unsigned char* payload);
  * failure. */
 int consume(int* out, struct Event* event)
 {
-	unsigned instruction;
+    unsigned instruction;
 
-	/* Check that the instruction itself is valid. */
-	instruction = (unsigned)event->instruction;
-	if (driverMap[instruction] == 0)
-	{
-		printf("Error: No callback registered for instruction ID '%u'.\n",
-			   instruction);
-		return 1;
-	}
+    /* Check that the instruction itself is valid. */
+    instruction = (unsigned)event->instruction;
+    if (driverMap[instruction] == 0)
+    {
+        printf("Error: No callback registered for instruction ID '%u'.\n",
+               instruction);
+        return 1;
+    }
 
-	/* Call the method and "return" the value. */
-	*out = (*driverMap[instruction])(event->payload);
+    /* Call the method and "return" the value. */
+    *out = (*driverMap[instruction])(event->payload);
 
-	/* NB: If you were doing the memory allocation trick I mentioned in the
+    /* NB: If you were doing the memory allocation trick I mentioned in the
      * comments in driver_demo.c, you would free that memory here. */
-	return 0;
+    return 0;
 }
 
 /* Registers a function into the map. */

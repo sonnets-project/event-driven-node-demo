@@ -25,8 +25,8 @@
 
 struct Event
 {
-	unsigned char instruction;
-	unsigned char payload[4];
+    unsigned char instruction;
+    unsigned char payload[4];
 };
 
 int payload_to_int(unsigned char*);
