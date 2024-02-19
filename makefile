@@ -1,6 +1,7 @@
 # Not my finest work.
 CFLAGS=-std=c89 -Wall -pedantic
 EXECUTABLES=event_demo stack_demo driver_demo
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 

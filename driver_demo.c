@@ -13,7 +13,6 @@
 #include "stack.h"
 
 #define TOTAL_INPUT_CHARS 45  /* Always cleanly divisible by 5 */
-#define TOTAL_EVENTS 9        /* i.e. TOTAL_INPUT_CHARS / 5 */
 
 /* Define callback (cb) functions to be registered into our function map.
  *
@@ -117,10 +116,10 @@ int main(void)
 	reg(4, push_cb);
 
 	/* Run events until we run out of bytes to process. */
-	for (i = 0; i < TOTAL_EVENTS; i++)
+	for (i = 0; i < TOTAL_INPUT_CHARS; i = i + 5)
 	{
 		/* Define the event object from the incoming bytes */
-		deserialise(&event, &content[i * 5]);
+		deserialise(&event, &content[i]);
 
 		/* I must consume... consume everything! */
 		rc = consume(&out, &event);
@@ -136,4 +135,3 @@ int main(void)
 }
 
 #undef TOTAL_INPUT_CHARS
-#undef TOTAL_EVENTS
