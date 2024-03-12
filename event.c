@@ -1,5 +1,7 @@
 #include "event.h"
 
+#include <stdio.h>
+
 int payload_to_int(const unsigned char* payload){return *(int*)payload;}
 
 void print_event(const struct Event* event)

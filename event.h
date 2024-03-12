@@ -21,8 +21,6 @@
  * MSB-first by bit. YMMV.
  */
 
-#include <stdio.h>
-
 struct Event
 {
     unsigned char instruction;
