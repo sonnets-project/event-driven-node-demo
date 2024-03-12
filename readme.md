@@ -57,19 +57,14 @@ An abridged view of an event-driven application is shown below.
   standalone manner.
 
 - Events are nothing more than a series of bytes that are exchanged between
-  drivers over some transport layer (e.g. IP, sockets, MPI). In this example,
-  `event.h` defines the structure of events in this demonstrator, and `event.c`
-  defines some "convenience" methods for setting and getting event data. A
-  demonstration of setting and serialisation/deserialisation of event data is
-  defined in `event_demo.c`.
+  drivers over some transport layer (e.g. IP, sockets, MPI).
 
 - The driver acts as a communications broker between the node and the wider
   network. The driver receives events, interprets them to decide how to
   interact with the application logic (if at all), and may send events to other
   nodes (though this is not showcased in this example). The driver is
   (typically) quiescent, in that it only does any work when an event is
-  received from another node. In this example, `driver.{c,h}` defines the logic
-  of the driver.
+  received from another node.
 
 - A node is the coupling between a driver and some application logic. Many
   nodes can be connected together in an event-driven system to complete a
@@ -112,12 +107,12 @@ manipulating the stack:
   stack, and moves the head accordingly. If the stack is at capacity, simply
   overwrites the top-most value.
 
-This stack is not particularly interesting or novel, but we will later connect
-it to an event-driver. *Note that this implementation can be compiled without
-any event-driven logic* - the stack functions completely independently. To
-showcase this, a small demonstrator of stack functionality is defined in the
-entry point of `stack_demo.c`, where a stack is initialised, and values are
-pushed, peeked, and popped.
+This stack itself is not particularly interesting or novel, but we will later
+connect it to an event-driver. *Note that this implementation can be compiled
+without any event-driven logic* - the stack functions completely
+independently. To showcase this, a small demonstrator of stack functionality is
+defined in the entry point of `stack_demo.c`, where a stack is initialised, and
+values are pushed, peeked, and popped.
 
 Events (what we're paid for)
 ===
@@ -300,6 +295,7 @@ events to this one if we really wanted to). In this example, the events are
 (in sequence):
 
 instruction|payload
+---|---
 0|0
 1|0
 4|125
@@ -314,6 +310,7 @@ The entry point is also responsible for registering each of the callback
 functions into the driver map; each to a different instruction:
 
 instruction|callback
+---|---
 0|`initialise_cb`
 1|`get_max_cb`
 2|`peek_cb`
