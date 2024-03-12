@@ -1,5 +1,6 @@
 /* Now we have defined what an event is, and the behaviour of a node (our stack
- * example), we are ready to create an event-driven stack, using a driver.
+ * example), we are ready to create an application node by incorporating a
+ * driver.
  *
  * A driver accepts incoming events, and executes functions depending on what
  * it receives.
