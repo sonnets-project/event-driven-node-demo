@@ -23,7 +23,7 @@
 
 /* Consumes an event, invokes some node logic, and returns the value to the
  * caller. */
-int consume(int*, struct Event*);
+int consume(int* const, const struct Event*);
 
 /* Registers a function into the map. */
-void reg(unsigned, int (*cb)(unsigned char*));
+void reg(const unsigned, int (*const cb)(const unsigned char*));

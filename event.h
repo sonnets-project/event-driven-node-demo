@@ -29,7 +29,7 @@ struct Event
     unsigned char payload[4];
 };
 
-int payload_to_int(unsigned char*);
-void print_event(struct Event*);
-void serialise(struct Event*, unsigned char*);
-void deserialise(struct Event*, unsigned char*);
+int payload_to_int(const unsigned char*);
+void print_event(const struct Event*);
+void serialise(const struct Event*, unsigned char* const);
+void deserialise(struct Event* const, const unsigned char*);

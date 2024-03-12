@@ -26,7 +26,7 @@
  * flow of execution. */
 
 /* Initialises the stack. Payload and return value are ignored. */
-int initialise_cb(unsigned char* payload)
+int initialise_cb(const unsigned char* payload)
 {
     printf("cb: initialising stack\n");
     init();
@@ -34,7 +34,7 @@ int initialise_cb(unsigned char* payload)
 }
 
 /* Functions that return something do so as an integer. */
-int get_max_cb(unsigned char* payload)
+int get_max_cb(const unsigned char* payload)
 {
     int max;
     printf("cb: getting maximum - it is ");
@@ -43,7 +43,7 @@ int get_max_cb(unsigned char* payload)
     return max;
 }
 
-int peek_cb(unsigned char* payload)
+int peek_cb(const unsigned char* payload)
 {
     int out;
     printf("cb: peeking - the value is ");
@@ -52,7 +52,7 @@ int peek_cb(unsigned char* payload)
     return out;
 }
 
-int pop_cb(unsigned char* payload)
+int pop_cb(const unsigned char* payload)
 {
     int out;
     printf("cb: popping - the value is ");
@@ -64,7 +64,7 @@ int pop_cb(unsigned char* payload)
 /* Push requires an input value, so we need to define some relationship between
  * the unsigned char* payload, and the integer to go on the stack. Thankfully,
  * this is defined in payload_to_int in event.c for convenience! */
-int push_cb(unsigned char* payload)
+int push_cb(const unsigned char* payload)
 {
     int input = payload_to_int(payload);
     printf("cb: pushing value '%d'.\n", input);

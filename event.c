@@ -1,14 +1,14 @@
 #include "event.h"
 
-int payload_to_int(unsigned char* payload){return *(int*)payload;}
+int payload_to_int(const unsigned char* payload){return *(int*)payload;}
 
-void print_event(struct Event* event)
+void print_event(const struct Event* event)
 {
     printf("Instruction: %d, Payload: %d\n",
            event->instruction, payload_to_int(event->payload));
 }
 
-void serialise(struct Event* event, unsigned char* bytes)
+void serialise(const struct Event* event, unsigned char* const bytes)
 {
     /* Deliberately hardcoded to emphasise the point */
     bytes[0] = event->instruction;
@@ -18,7 +18,7 @@ void serialise(struct Event* event, unsigned char* bytes)
     bytes[4] = event->payload[3];
 }
 
-void deserialise(struct Event* event, unsigned char* bytes)
+void deserialise(struct Event* const event, const unsigned char* bytes)
 {
     /* Deliberately hardcoded to emphasise the point */
     event->instruction = bytes[0];

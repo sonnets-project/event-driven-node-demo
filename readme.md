@@ -103,7 +103,7 @@ manipulating the stack:
 - `int pop(void)`: Returns the value from `int peek(void)`, and removes that
   value from the stack.
 
-- `void push(int)`: Places the value passed as argument to the top of the
+- `void push(const int)`: Places the value passed as argument to the top of the
   stack, and moves the head accordingly. If the stack is at capacity, simply
   overwrites the top-most value.
 
@@ -162,19 +162,20 @@ to.
 The translation unit compiled from `event.{c,h}` defines some convenience
 methods:
 
-- `int payload_to_int(unsigned char*)`: Converts a payload passed as argument
-  to an integer, brazenly assuming that integers are four bytes long in your
-  computer.
+- `int payload_to_int(const unsigned char*)`: Converts a payload passed as
+  argument to an integer, brazenly assuming that integers are four bytes long
+  in your computer.
 
-- `void print_event(struct Event*)`: Offers a pretty-print of an event
+- `void print_event(const struct Event*)`: Offers a pretty-print of an event
   structure.
 
-- `void serialise(struct Event*, unsigned char*)`: Writes the content of the
-  event passed as argument, to the array in the second argument. The second
-  argument must have a length of at least five (to fit the entirety of the
-  event).
+- `void serialise(const struct Event*, unsigned char* const)`: Writes the
+  content of the event passed as the first argument, to the array in the second
+  argument. The second argument must have a length of at least five (to fit the
+  entirety of the event).
 
-- `void deserialise(struct Event*, unsigned char*)`: The reverse of the above.
+- `void deserialise(struct Event* const, const unsigned char*)`: The reverse of
+  the above.
 
 The entry point in `event_demo.c` showcases these methods, by constructing an
 event and printing it in different ways. *Note that `event_demo` is compiled
@@ -194,7 +195,7 @@ node logic - the driver simply "drives" the behaviour of the node. This
 `driverMap` is declared in `driver.c` as:
 
 ```
-int (*driverMap[DRIVER_MAP_SIZE])(unsigned char* payload);
+int (*driverMap[DRIVER_MAP_SIZE])(const unsigned char* payload);
 ```
 
 Since we're working in C89, and our instruction field is defined by a character
@@ -209,17 +210,18 @@ dictionary, in Lua a table, and so on.
 
 The driver has two related methods, defined in `driver.c`:
 
-- `void reg(unsigned key, int (*cb)(unsigned char*))`: Adds an entry to the
-  driver map in element `key`, corresponding to the function pointer `cb`
-  (short for call-back). Overwrites if a function pointer is already defined
-  for that key.
+- `void reg(const unsigned key, int (*const cb)(const unsigned char*))`: Adds
+  an entry to the driver map in element `key`, corresponding to the function
+  pointer `cb` (short for call-back). Overwrites if a function pointer is
+  already defined for that key.
 
-- `int consume (int* out, struct Event* event)`: Reads the `instruction` field
-  from an incoming event - if that corresponds to an entry in the driver map,
-  then call that function passing the event payload as an argument. The return
-  value of that function is written to `out`, and `consume` itself
-  returns 0. If the instruction field does not have a corresponding entry in
-  the driver map, `consume` screams loudly and returns 1.
+- `int consume (int* const out, const struct Event* event)`: Reads the
+  `instruction` field from an incoming event - if that corresponds to an entry
+  in the driver map, then call that function passing the event payload as an
+  argument. The return value of that function is written to `out`, and
+  `consume` itself returns 0. If the instruction field does not have a
+  corresponding entry in the driver map, `consume` screams loudly and returns
+  1.
 
 To use this driver, one first registers callback functions with the
 driver. Once these functions have been registered, consumed events then call
@@ -267,19 +269,19 @@ may even send events themselves.
 
 These callback functions are:
 
-- `int initialise_cb(unsigned char* payload)`: Calls the `void init(void)`
-  stack function, and returns 0. Payload is ignored.
+- `int initialise_cb(const unsigned char* payload)`: Calls the `void
+  init(void)` stack function, and returns 0. Payload is ignored.
 
-- `int get_max_cb(unsigned char* payload)`: Calls the `int get_max(void)` stack
-  function and returns the value. Payload is ignored.
+- `int get_max_cb(const unsigned char* payload)`: Calls the `int get_max(void)`
+  stack function and returns the value. Payload is ignored.
 
-- `int peek_cb(unsigned char* payload)`: As above, for `int peek(void)`.
+- `int peek_cb(const unsigned char* payload)`: As above, for `int peek(void)`.
 
-- `int pop_cb(unsigned char* payload)`: As above, for `int pop(void)`.
+- `int pop_cb(const unsigned char* payload)`: As above, for `int pop(void)`.
 
-- `int push_cb(unsigned char* payload)`: Pushes the value from the event
-  payload onto the stack using the `void push(int)` stack function, and returns
-  0.
+- `int push_cb(const unsigned char* payload)`: Pushes the value from the event
+  payload onto the stack using the `void push(const int)` stack function, and
+  returns 0.
 
 Each of these callback functions prints to screen, to make the path of
 execution easier to follow when running the demo (and I highly recommend you do

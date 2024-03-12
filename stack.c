@@ -26,7 +26,7 @@ int pop(void)
     return out;
 }
 
-void push(int v)
+void push(const int v)
 {
     if (stack.head + 1 < STACK_MAX) stack.head++;  /* Eugh */
     stack.data[stack.head] = v;

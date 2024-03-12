@@ -9,4 +9,4 @@ void init(void);
 int get_max(void);
 int peek(void);
 int pop(void);
-void push(int);
+void push(const int);

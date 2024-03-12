@@ -2,11 +2,11 @@
 
 #include "driver.h"
 
-int (*driverMap[DRIVER_MAP_SIZE])(unsigned char* payload);
+int (*driverMap[DRIVER_MAP_SIZE])(const unsigned char* payload);
 
 /* Define our event-consuming method. Returns 0 on success, and 1 on
  * failure. */
-int consume(int* out, struct Event* event)
+int consume(int* const out, const struct Event* event)
 {
     unsigned instruction;
 
@@ -28,4 +28,5 @@ int consume(int* out, struct Event* event)
 }
 
 /* Registers a function into the map. */
-void reg(unsigned key, int (*cb)(unsigned char*)){driverMap[key] = cb;}
+void reg(const unsigned key, int (*const cb)(const unsigned char*))
+{driverMap[key] = cb;}
