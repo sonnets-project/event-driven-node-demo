@@ -1,6 +1,7 @@
 # Not my finest work.
 CFLAGS=-std=c89 -Wall -pedantic
 EXECUTABLES=event_demo stack_demo ebc_node_demo
+.DEFAULT_GOAL := all
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
