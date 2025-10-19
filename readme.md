@@ -355,6 +355,22 @@ Lo and behold it all works as Mark ordained. (if it doesn't, please tell me!).
 >
 >  - See if it works (it should!).
 
+A Second Example
+---
+
+An extension to the example above is shown in `ebc_node_fileio_demo.c`, where
+events are read from a file. This example uses inotify to "event-ify" file
+modifications (Linux >= 2.6.13 only). You can test this by writing bytes to the
+`input` file in your shell:
+
+```
+printf "\x04\x7d\x00\x00\x00\x00" > input  # Push payload 125
+```
+
+An event-driven system powered by the filesystem is going to be slower than
+e.g. a socket-based equivalent, but this acts as a demonstration of an
+application that waits for events from some external source.
+
 So What?
 ===
 
