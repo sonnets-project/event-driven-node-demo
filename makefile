@@ -1,5 +1,5 @@
 # Not my finest work.
-CFLAGS=-std=c89 -Wall -pedantic
+CFLAGS=-std=c89 -Wall -Wextra -Wpedantic -Wvla -Wconversion -Warith-conversion
 EXECUTABLES=event_demo stack_demo ebc_node_demo
 .DEFAULT_GOAL := all
 

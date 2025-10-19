@@ -28,6 +28,7 @@
 /* Initialises the stack. Payload and return value are ignored. */
 int initialise_cb(const unsigned char* payload)
 {
+    (void)payload;  /* Unused */
     printf("cb: initialising stack\n");
     init();
     return 0;
@@ -37,6 +38,7 @@ int initialise_cb(const unsigned char* payload)
 int get_max_cb(const unsigned char* payload)
 {
     int max;
+    (void)payload;  /* Unused */
     printf("cb: getting maximum - it is ");
     max = get_max();
     printf("'%d'.\n", max);
@@ -46,6 +48,7 @@ int get_max_cb(const unsigned char* payload)
 int peek_cb(const unsigned char* payload)
 {
     int out;
+    (void)payload;  /* Unused */
     printf("cb: peeking - the value is ");
     out = peek();
     printf("'%d'.\n", out);
@@ -55,6 +58,7 @@ int peek_cb(const unsigned char* payload)
 int pop_cb(const unsigned char* payload)
 {
     int out;
+    (void)payload;  /* Unused */
     printf("cb: popping - the value is ");
     out = pop();
     printf("'%d'.\n", out);
