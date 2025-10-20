@@ -10,6 +10,8 @@
 
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/inotify.h>
 #include <unistd.h>
 
@@ -17,12 +19,9 @@
 #include "ebc_node_callbacks.h"
 #include "stack.h"
 
-#define FILEPATH_TO_WATCH "input"  /* This must exist before the program
-                                      starts. */
-
 /* Note the callback functions defined in ebc_node_callbacks.c to assist with
    this example. Now we hook it all up. */
-int main(void)
+int main(int const argc, char const* const* const argv)
 {
     struct Event event;
     int out;
@@ -33,6 +32,32 @@ int main(void)
     char inotifyBuf[sizeof(struct inotify_event)]; /* One inotify event */
     struct inotify_event *inotifyEvent;
     ssize_t readrc;
+    char *watchPath;
+    FILE *watchFl;
+
+    /* Read first argument for name of file to watch, and store. Make sure it
+     * exists before we start getting serious. */
+    if (argc < 2)
+    {
+        fprintf(stderr, "Give me a path to watch for events!\n");
+        return 1;
+    }
+    if (!(watchPath = calloc(strlen(argv[1]) + 1, sizeof(char))) && argv[1])
+    {
+        perror("calloc");
+        return 1;
+    }
+    else strcpy(watchPath, argv[1]);
+    if (!(watchFl = fopen(watchPath, "r")))
+    {
+        perror("fopen");
+        return 1;
+    }
+    if (fclose(watchFl))
+    {
+        perror("fclose");
+        return 1;
+    }
 
     /* Register callback functions into our driver's map, each with a different
      * instruction id. */
@@ -48,7 +73,7 @@ int main(void)
         perror("inotify_init");
         return 1;
     }
-    if ((inotifywd = inotify_add_watch(inotifyfd, FILEPATH_TO_WATCH,
+    if ((inotifywd = inotify_add_watch(inotifyfd, watchPath,
                                        IN_MODIFY)) < 0)
     {
         perror("inotify_add_watch");
@@ -70,7 +95,7 @@ int main(void)
         if (inotifyEvent->wd == inotifywd)
         {
             /* Read file for five bytes */
-            if (!(eventFl = fopen(FILEPATH_TO_WATCH, "r")))
+            if (!(eventFl = fopen(watchPath, "r")))
             {
                 perror("fopen");
                 return 1;
@@ -110,5 +135,3 @@ int main(void)
     } while (1);
     return 0;
 }
-
-#undef FILEPATH_TO_WATCH
