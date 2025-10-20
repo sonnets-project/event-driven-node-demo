@@ -74,7 +74,7 @@ int main(int const argc, char const* const* const argv)
         return 1;
     }
     if ((inotifywd = inotify_add_watch(inotifyfd, watchPath,
-                                       IN_MODIFY)) < 0)
+                                       IN_CLOSE_WRITE)) < 0)
     {
         perror("inotify_add_watch");
         return 1;
@@ -90,7 +90,6 @@ int main(int const argc, char const* const* const argv)
             perror("read");
             return 1;
         }
-        printf("Change detected.\n");
         inotifyEvent = (struct inotify_event*) inotifyBuf;
         if (inotifyEvent->wd == inotifywd)
         {
